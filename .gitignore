@@ -21,3 +21,25 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+
+
+
+
+
+BuildControls ----> 
+import React from "react";
+import BuildControl from "./BuildControl";
+const BuildControls = props => (
+    <div>
+        <BuildControl/>
+        <BuildControl/>
+        <BuildControl/>
+    </div>);
+
+export default BuildControls;                                      BuildControl --->
+import React from "react";
+const BuildControl = props => (<div>Nemeh hasah</div>);
+export default BuildControl; 
+=====> error: ERROR in ./src/components/BuildControls/index.js 5:0-42
+Module not found: Error: Can't resolve './BuildControl' in 'C:\Users\user\Desktop\burger-react\src\components\BuildControls'
