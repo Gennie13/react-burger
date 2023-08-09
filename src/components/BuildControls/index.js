@@ -4,12 +4,7 @@ import BuildControl from "../BuildControl/index";
 import css from "./style.module.css";
 
 const BuildControls = props => {
-    const controls = {
-        bacon: "гахайн мах",
-        cheese: "бяслаг",
-        meat: "үхрийн мах",
-        salad: "салад"
-    }
+    
 
     return (
         <div className={css.BuildControls}>
@@ -18,14 +13,19 @@ const BuildControls = props => {
             </p>
 
             {
-            Object.keys(controls).map(el => (
+            Object.keys(props.ingredientsNames).map(el => (
                 <BuildControl 
                     key={el}
-                    ortsHasah={props.ortsHasah} ortsNemeh={props.ortsNemeh} disabled={props.disabledIngredients} type={el} orts={controls[el]}
+                    ortsHasah={props.ortsHasah} ortsNemeh={props.ortsNemeh} disabled={props.disabledIngredients} type={el} orts={props.ingredientsNames[el]}
                 />
             ))
             }
-        <button disabled={props.disabled} className="OrderButton">Захиалах</button>
+        <button 
+            onClick={props.showComfirmModal} 
+            disabled={props.disabled} 
+            className={css.OrderButton}
+        >Захиалах
+        </button>
     </div>
 
     );
