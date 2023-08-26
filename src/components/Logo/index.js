@@ -5,7 +5,7 @@ import logoImage from "../../assets/images/burger-logo.png";
 
 const Logo = () => (
  <div className={css.Logo}>
-    <img src={logoImage}/>
+    <img src= {logoImage}/>
  </div>   
 );
 

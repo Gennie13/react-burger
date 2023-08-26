@@ -1,8 +1,10 @@
 import React from "react";
+import { connect } from "react-redux";
 
 import Button from "../General/Button"
 
 const OrderSummary = props => {
+    // console.log("sum==>", props);
     return (
         <div>
             <h3>Таны захиалга</h3>
@@ -14,13 +16,29 @@ const OrderSummary = props => {
                     </li>
                 ))}
             </ul>
-            <p><strong>Захиалгын үнэ: {props.price} ₮ </strong></p>
+            <p>
+                <strong>Захиалгын үнэ: {props.price} ₮ </strong>
+            </p>
             <p>Цаашаа үргэжлүүлэх үү?</p>
-            <Button clicked={props.onCancel} btnType="Danger" text="ТАТГАЛЗАХ"/>
-            <Button clicked={props.onContinue} btnType="Success" text="ҮРГЭЖЛҮҮЛЭХ"/>
+            
+            <Button 
+                clicked={props.onCancel} btnType="Danger" 
+                text="ТАТГАЛЗАХ"
+            />
+            
+            <Button 
+                clicked={props.onContinue} btnType="Success" 
+                text="ҮРГЭЖЛҮҮЛЭХ" 
+            />
         </div>
     );
 };
 
-
-export default OrderSummary;
+const mapStateToProps = state => {
+    return {
+        ingredients: state.burgerReducer.ingredients,
+        ingredientsNames: state.burgerReducer.IngredientsNames,
+        price: state.burgerReducer.totalPrice
+    };
+};
+export default connect(mapStateToProps)(OrderSummary);

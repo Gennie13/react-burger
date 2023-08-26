@@ -1,37 +1,29 @@
 import React, { Component } from "react";
+import { withRouter } from "react-router-dom";
 
 import Burger from "../../components/Burger";
 import BuildControls from "../../components/BuildControls";
 import Modal from "../../components/General/Modal";
 import OrderSummary from "../../components/OrderSummary";
+// import axios from "../../axios-orders";
+import Spinner from "../../components/General/Spinner";
 
-//price
-const Ingredients_Price = { salad: 150, cheese: 250, bacon: 800, meat: 1500 };
-const Ingredients_Names = {
-    bacon: "гахайн мах",
-    cheese: "бяслаг",
-    meat: "үхрийн мах",
-    salad: "салад"
-};
 
 //class
-class BurgerBuilder extends Component {
+class BurgerPage extends Component {
 
-    //ugugdul hadgalah, eh componentsoos burgerbuilder compini=ants ruu nairlagaa yvuulna
+    //ugugdul hadgalah, eh componentsoos BurgerPage compini=ants ruu nairlagaa yvuulna
     state = {
-        ingredients : {
-            salad: 0,
-            cheese: 1,
-            bacon: 0,
-            meat: 0
-        },
-
-        totalPrice: 1000,
-        //орцуудыг сонгосон эсэх
-        purchasing: false,
         //захиалгын товч
-        confirmOrder: false
+        confirmOrder: false,
     };
+    
+    //zahialah tovch
+    continueOrder = () => {
+        //shippingPage ruu shiljih
+        this.props.history.push("/ship");
+    };
+
     //захиалгын товч
     showComfirmModal = () => {
         this.setState({confirmOrder: true});
@@ -39,65 +31,36 @@ class BurgerBuilder extends Component {
     closeConfirmModal = () => {
         this.setState({confirmOrder: false});
     };
-    ContinueOrder = () => {
-        console.log("continue...")
-    }
-
-    ortsNemeh = (type) => {
-        // this.setState()
-        const newIngredients = {...this.state.ingredients};
-        newIngredients[type]++;
-
-        const newPrice = this.state.totalPrice + Ingredients_Price[type];
-
-
-        this.setState({purchasing: true, totalPrice: newPrice, ingredients: newIngredients});
-    };
-
-    ortsHasah = (type) => {
-        if(this.state.ingredients[type] > 0)
-        {
-            const newIngredients = {...this.state.ingredients};
-            newIngredients[type]--;
-            const newPrice = this.state.totalPrice - Ingredients_Price[type]
-            this.setState({purchasing: newPrice>1000,  totalPrice: newPrice,ingredients: newIngredients});
-        }
-        
-    };
-
 
     render() {
-        const disabledIngredients = {
-            ...this.state.ingredients
-        };
-        for(let key in disabledIngredients) {
-            disabledIngredients[key] = disabledIngredients[key] <= 0;
-
-        }
         return(
             <div>
                 <Modal 
                     closeConfirmModal={this.closeConfirmModal} 
-                    show={this.state.confirmOrder}>
+                    show={this.state.confirmOrder}
+                >    
+                    {this.state.loading ? (
+                    <Spinner/>
+                    ) : (
                     <OrderSummary 
                         onCancel={this.closeConfirmModal}
-                        onContinue={this.ContinueOrder}
-                        price={this.state.totalPrice}
-                        ingredientsNames = {Ingredients_Names}
-                        ingredients={this.state.ingredients} />
+                        onContinue={this.continueOrder} 
+                    />
+                    )
+                    }
                 </Modal>
-                <Burger orts={this.state.ingredients} />
+
+                <Burger/>
+
                 <BuildControls
                     showComfirmModal={this.showComfirmModal}
-                    ingredientsNames = {Ingredients_Names}
-                    disabled={!this.state.purchasing}
-                    price={this.state.totalPrice}
-                    disabledIngredients={disabledIngredients} 
-                    ortsHasah={this.ortsHasah} ortsNemeh={this.ortsNemeh}/>
+                    ortsHasah={this.props.burgerOrtsHasah} 
+                    ortsNemeh={this.props.burgerOrtsNemeh}
+                />
             </div>
         );
     }
 }
 
 
-export default BurgerBuilder;
+export default withRouter(BurgerPage);
